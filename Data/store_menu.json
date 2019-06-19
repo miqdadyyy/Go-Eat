@@ -1,0 +1,102 @@
+[
+  {
+    "name": "Ayam Goreng",
+    "price": 20000
+  },
+  {
+    "name": "Seblak Basah",
+    "price": 10000
+  },
+  {
+    "name": "Ayam Krispi",
+    "price": 20000
+  },
+  {
+    "name": "Es Teh",
+    "price": 2500
+  },
+  {
+    "name": "Es Jeruk",
+    "price": 2500
+  },
+  {
+    "name": "Teh Hangat",
+    "price": 2000
+  },
+  {
+    "name": "Jeruk Hangat",
+    "price": 2000
+  },
+  {
+    "name": "Mie Setan",
+    "price": 12000
+  },
+  {
+    "name": "Ayam Geprek",
+    "price": 19000
+  },
+  {
+    "name": "Martabak Telur",
+    "price": 40000
+  },
+  {
+    "name": "Martabak Manis",
+    "price": 30000
+  },
+  {
+    "name": "Mie Ayam",
+    "price": 10000
+  },
+  {
+    "name": "Burger",
+    "price": 23000
+  },
+  {
+    "name": "Nasi Campur",
+    "price": 5000
+  },
+  {
+    "name": "Nasi Pecel",
+    "price": 10000
+  },
+  {
+    "name": "Batagor",
+    "price": 15000
+  },
+  {
+    "name": "Es Kopi Susu",
+    "price": 15000
+  },
+  {
+    "name": "Es Cappucino",
+    "price": 20000
+  },
+  {
+    "name": "Es Kopi Regal",
+    "price": 20000
+  },
+  {
+    "name": "Telur Bakar",
+    "price": 7000
+  },
+  {
+    "name": "Ayam Bakar",
+    "price": 10000
+  },
+  {
+    "name": "Ayam Pedas",
+    "price": 12000
+  },
+  {
+    "name": "Bubble Tea",
+    "price": 20000
+  },
+  {
+    "name": "Crepes",
+    "price": 20000
+  },
+  {
+    "name": "Chiken Pok Pok",
+    "price": 20000
+  }
+]
