@@ -1,0 +1,117 @@
+{
+  "width": 20,
+  "height": 20,
+  "user": {
+    "x": 2,
+    "y": 2
+  },
+  "drivers": [
+    {
+      "x": 5,
+      "y": 5
+    },
+    {
+      "x": 10,
+      "y": 5
+    },
+    {
+      "x": 15,
+      "y": 5
+    }
+  ],
+  "stores": [
+    {
+      "x": 10,
+      "y": 10,
+      "name": "Geprek Bensu",
+      "menus": [
+        {
+          "name": "Ayam Geprek Biasa",
+          "price": 19000
+        },
+        {
+          "name": "Ayam Geprek Telur Asin",
+          "price": 21000
+        },
+        {
+          "name": "Ayam Geprek Matah",
+          "price": 16000
+        },
+        {
+          "name": "Es Teh",
+          "price": 5000
+        },
+        {
+          "name": "Air Minum",
+          "price": 3000
+        },
+        {
+          "name": "Bensu Juice",
+          "price": 6000
+        }
+      ]
+    },
+    {
+      "x": 10,
+      "y": 15,
+      "name": "Ayam Goreng Nelongso",
+      "menus": [
+        {
+          "name": "Ayam Nelongso",
+          "price": 6000
+        },
+        {
+          "name": "Ayam Krispi",
+          "price": 12000
+        },
+        {
+          "name": "Chiken Pok Pok",
+          "price": 16000
+        },
+        {
+          "name": "Es Jeruk",
+          "price": 3000
+        },
+        {
+          "name": "Air Minum",
+          "price": 3000
+        },
+        {
+          "name": "Milo",
+          "price": 6000
+        }
+      ]
+    },
+    {
+      "x": 10,
+      "y": 18,
+      "name": "Kopi Kesuwon",
+      "menus": [
+        {
+          "name": "Es Kopi Susu",
+          "price": 15000
+        },
+        {
+          "name": "Es Kopi Cappucino",
+          "price": 20000
+        },
+        {
+          "name": "Brownies",
+          "price": 6000
+        },
+        {
+          "name": "Donat",
+          "price": 5000
+        },
+        {
+          "name": "Avogato",
+          "price": 23000
+        },
+        {
+          "name": "Cafe Latte",
+          "price": 17000
+        }
+      ]
+    }
+  ]
+}
