@@ -1,9 +1,15 @@
+require_relative 'Driver'
+require_relative 'Store'
+require_relative '../Modules/DriverModule'
+require_relative '../Modules/StoreModule'
+
 class Map
-  attr_accessor :map, :stores
+  attr_accessor :map, :stores, :drivers
   attr_reader :width, :height
 
   def initialize(*args)
     @stores = []
+    @drivers = []
 
     case args.size
     when 0
@@ -32,8 +38,8 @@ class Map
       @map[pos_user_y][pos_user_x] = 'U'
     when 1
       map_data = JSON.parse(File.open("Data/" + args[0]).read, :symbolize_names => true)
-      @width = 20
-      @height = 20
+      @width = map_data[:width]
+      @height = map_data[:height]
       @map = Array.new(@height) {Array.new(@width) {"."}}
 
       drivers_count = map_data[:drivers].size
@@ -64,7 +70,9 @@ class Map
       end
 
       if (character == 'S')
-        @stores << {:x => x, :y => y, :store => StoreModule.generateStore}
+        @stores << StoreModule.generateStore(x, y)
+      elsif
+        @drivers << DriverModule.generateDriver(x,y)
       end
       @map[y][x] = character
     end
@@ -74,9 +82,11 @@ class Map
   def generateMap(objects, character)
     for object in objects
       if(character == 'S')
-        @stores << object
+        @stores << Store.new(object[:name], object[:menus], object[:pos])
+      elsif(character == 'D')
+        @drivers << Driver.new(object[:name], object[:pos], object[:rating])
       end
-      @map[object[:y].to_i][object[:x].to_i] = character
+      @map[object[:pos][:y].to_i][object[:pos][:x].to_i] = character
     end
   end
 end

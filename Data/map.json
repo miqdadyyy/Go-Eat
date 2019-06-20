@@ -2,27 +2,49 @@
   "width": 20,
   "height": 20,
   "user": {
-    "x": 2,
-    "y": 2
+    "pos": {
+      "x": 2,
+      "y": 2
+    }
   },
   "drivers": [
     {
-      "x": 5,
-      "y": 5
+      "pos": {
+        "x": 5,
+        "y": 5
+      },
+      "name": "Bambang",
+      "ratings": [
+      ],
+      "rating": 0
     },
     {
-      "x": 10,
-      "y": 5
+      "pos": {
+        "x": 10,
+        "y": 5
+      },
+      "name": "Agus",
+      "ratings": [
+      ],
+      "rating": 0
     },
     {
-      "x": 15,
-      "y": 5
+      "pos": {
+        "x": 15,
+        "y": 5
+      },
+      "name": "Budi",
+      "ratings": [
+      ],
+      "rating": 0
     }
   ],
   "stores": [
     {
-      "x": 10,
-      "y": 10,
+      "pos": {
+        "x": 10,
+        "y": 10
+      },
       "name": "Geprek Bensu",
       "menus": [
         {
@@ -52,8 +74,10 @@
       ]
     },
     {
-      "x": 10,
-      "y": 15,
+      "pos": {
+        "x": 10,
+        "y": 15
+      },
       "name": "Ayam Goreng Nelongso",
       "menus": [
         {
@@ -83,8 +107,10 @@
       ]
     },
     {
-      "x": 10,
-      "y": 18,
+      "pos": {
+        "x": 10,
+        "y": 18
+      },
       "name": "Kopi Kesuwon",
       "menus": [
         {
