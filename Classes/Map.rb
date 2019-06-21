@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 require_relative 'Driver'
 require_relative 'Store'
 require_relative '../Modules/DriverModule'
 require_relative '../Modules/StoreModule'
 
 class Map
-  attr_accessor :map, :stores, :drivers
+  attr_accessor :map, :stores, :drivers, :user
   attr_reader :width, :height
 
   def initialize(*args)
@@ -15,18 +17,19 @@ class Map
     when 0
       @width = 20
       @height = 20
-      @map = Array.new(@height) {Array.new(@width) {"."}}
+      @map = Array.new(@height) { Array.new(@width) { '.' } }
 
       drivers_count = 5
       stores_count = 3
       generateMapRandom(drivers_count, 'D')
       generateMapRandom(stores_count, 'S')
+      puts "call random"
       generateMapRandom(1, 'U')
 
     when 3
       @width = args[0].to_i
       @height = args[0].to_i
-      @map = Array.new(@height) {Array.new(@width) {"."}}
+      @map = Array.new(@height) { Array.new(@width) { '.' } }
 
       drivers_count = 5
       stores_count = 3
@@ -36,11 +39,12 @@ class Map
       pos_user_x = args[1].to_i
       pos_user_y = args[2].to_i
       @map[pos_user_y][pos_user_x] = 'U'
+      @user = { x: pos_user_x, y: pos_user_y }
     when 1
-      map_data = JSON.parse(File.open("Data/" + args[0]).read, :symbolize_names => true)
+      map_data = JSON.parse(File.open('Data/' + args[0]).read, symbolize_names: true)
       @width = map_data[:width]
       @height = map_data[:height]
-      @map = Array.new(@height) {Array.new(@width) {"."}}
+      @map = Array.new(@height) { Array.new(@width) { '.' } }
 
       drivers_count = map_data[:drivers].size
       stores_count = map_data[:stores].size
@@ -50,12 +54,12 @@ class Map
     end
   end
 
-  def showMap()
-    for i in map.map
-      for j in i
+  def showMap(map = @map)
+    map.map.each do |i|
+      i.each do |j|
         print j
       end
-      puts()
+      puts
     end
     nil
   end
@@ -63,16 +67,20 @@ class Map
   private
 
   def generateMapRandom(count, character)
-    for i in 1..count
-      x, y = rand(@width), rand(@height)
+    (1..count).each do |_i|
+      x = rand(@width)
+      y = rand(@height)
       while @map[y][x] != '.'
-        x, y = rand(@width), rand(@height)
+        x = rand(@width)
+        y = rand(@height)
       end
 
-      if (character == 'S')
+      if character == 'S'
         @stores << StoreModule.generateStore(x, y)
-      elsif
-        @drivers << DriverModule.generateDriver(x,y)
+      elsif character == 'D'
+        @drivers << DriverModule.generateDriver(x, y)
+      elsif character == 'U'
+        @user = {x: x, y: y}
       end
       @map[y][x] = character
     end
@@ -80,11 +88,13 @@ class Map
   end
 
   def generateMap(objects, character)
-    for object in objects
-      if(character == 'S')
+    objects.each do |object|
+      if character == 'S'
         @stores << Store.new(object[:name], object[:menus], object[:pos])
-      elsif(character == 'D')
+      elsif character == 'D'
         @drivers << Driver.new(object[:name], object[:pos], object[:rating])
+      elsif character == 'U'
+        @user = object[:pos]
       end
       @map[object[:pos][:y].to_i][object[:pos][:x].to_i] = character
     end
