@@ -8,12 +8,12 @@ class Driver
     @ratings = []
   end
 
-  def addRating(rate)
-    @@ratings << rate
+  def add_rating(rate)
+    @ratings << rate
     total = 0
-    @@ratings.each do |x|
+    @ratings.each do |x|
       total += x
     end
-    @rating = total / @@rating.size
+    @rating = total / @ratings.size
   end
 end

@@ -4,9 +4,12 @@ require_relative 'Classes/Map'
 require_relative 'Modules/StoreModule'
 require_relative 'Modules/MapModule'
 
+@cost_per_unit = 300
+
 def main
   @map = Map.new(*ARGV)
   loop do
+    check_drivers()
     puts('Selamat data di Go-Eat')
     puts('1. Show Map')
     puts('2. Order Food')
@@ -17,12 +20,12 @@ def main
     case main_menu
     when 1
       puts('=' * @map.width)
-      @map.showMap
+      @map.show_map
       puts('=' * @map.width)
     when 2
       loop do
         # Show Stores
-        store = getStore
+        store = get_store
         if store.nil?
           break
         else
@@ -33,8 +36,8 @@ def main
             # Show Orders
             unless orders.empty?
               puts('Menu yang anda pesan adalah : ')
-              showOrders(orders)
-              puts("Total harga : #{getTotalPrice(orders)}")
+              show_orders(orders)
+              puts("Total harga : #{get_total_price(orders)}")
             end
             puts('=' * @map.width)
             puts('Menu : ')
@@ -48,14 +51,13 @@ def main
             case menu_store
             when 1
               loop do
-                menu = getMenu(store, orders)
-                puts menu
+                menu = get_menu(store, orders)
                 !menu.nil? ? orders << menu : break
               end
             when 2
               puts('=' * @map.width)
               puts('Silahkan pilih item untuk mengganti pemesanan : ')
-              showOrders(orders)
+              show_orders(orders)
               print('Pilih menu : ')
               menu_change = STDIN.gets.chomp.to_i
               if !orders[menu_change - 1].nil?
@@ -66,11 +68,32 @@ def main
                 break
               end
             when 3
-              driver_path_to_store = findingDriver(store)
-              store_path_to_user = storeToUser(store)
+              if (orders.size == 0)
+                puts('=' * @map.width)
+                puts('Anda belum memesan apapun')
+                next
+              end
 
-              puts @map.showMap(driver_path_to_store[:map])
-              puts @map.showMap(store_path_to_user[:map])
+              driver_path_to_store = finding_driver(store)
+              driver = driver_path_to_store[:driver]
+              store_path_to_user = store_to_user(store, driver_path_to_store[:map])
+
+              cost = store_path_to_user[:cost]
+              puts("Biaya pengantaran adalah #{cost * @cost_per_unit} dengan rute sebagai berikut : ")
+              puts @map.show_map(store_path_to_user[:map])
+              puts('=' * @map.width)
+              puts("Sehingga total biaya adalah #{get_total_price(orders) + cost * @cost_per_unit} ")
+              print('Apakah anda yakin akan memesan? (y/n) : ')
+              ans = STDIN.gets.chomp
+              if ans == 'y'
+                print("Beri rating pada driver #{driver.name} (1-5) : ")
+                rating = STDIN.gets.chomp.to_i % 5 + 1
+                driver.add_rating(rating)
+                puts('Terima kasih telah memesan makanan menggunakan Go-Eat')
+                puts('=' * @map.width)
+                write_transaction_to_file({store: store, orders: orders, :cost => get_total_price(orders) + cost * @cost_per_unit})
+              end
+              break
             else
               break
             end
@@ -79,7 +102,9 @@ def main
         end
       end
     when 3
-      puts('View History')
+      puts('=' * @map.width)
+      read_transaction
+      puts('=' * @map.width)
     else
       puts('Terima Kasih telah mengakses Go-Eat')
       break
@@ -87,7 +112,7 @@ def main
   end
 end
 
-def getStore
+def get_store
   stores = @map.stores
   puts('=' * @map.width)
   puts('Daftar toko : ')
@@ -100,7 +125,7 @@ def getStore
   store = stores[store_menu - 1]
 end
 
-def getMenu(store, _orders)
+def get_menu(store, _orders)
   # Show Menus
   menus = store.menus
   menus.each_with_index do |menu, index|
@@ -119,7 +144,7 @@ def getMenu(store, _orders)
   menu
 end
 
-def getTotalPrice(orders)
+def get_total_price(orders)
   total = 0
   orders.each do |order|
     total += order[:price] * order[:quantity]
@@ -127,14 +152,14 @@ def getTotalPrice(orders)
   total
 end
 
-def showOrders(orders)
+def show_orders(orders)
   puts orders.class
   orders.each_with_index do |order, index|
     puts("#{index + 1}. #{order[:name]} seharga #{order[:price]} (#{order[:quantity]})")
   end
 end
 
-def findingDriver(store)
+def finding_driver(store)
   result = {:driver => nil, :cost => -1, :map => nil}
   @map.drivers.each do |driver|
     temp = MapModule.generateMapPath(@map.map, store.pos, driver.pos)
@@ -143,9 +168,43 @@ def findingDriver(store)
   result
 end
 
-def storeToUser(store)
-  temp = MapModule.generateMapPath(@map.map, store.pos, @map.user)
+def store_to_user(store, map = @map.map)
+  temp = MapModule.generateMapPath(map, store.pos, @map.user)
   temp
+end
+
+def check_drivers
+  @map.drivers.each do |driver|
+    if driver.rating < 3 && driver.ratings.size != 0
+      @map.map[driver.pos[:y]][driver.pos[:x]] = '.'
+      @map.drivers.delete(driver)
+      @map.generate_map_random(1, 'D')
+    end
+  end
+end
+
+def write_transaction_to_file(data)
+  new_data = {
+      "store" => data[:store].name,
+      "menus" => data[:orders],
+      "cost" => data[:cost]
+  }
+
+  file = File.open('Data/transaction.json', 'r')
+  current_data = JSON.parse(file.read) << new_data
+  File.open('Data/transaction.json', 'w+') {|f| f.puts(JSON.pretty_generate(current_data))}
+end
+
+def read_transaction()
+  file = File.open('Data/transaction.json', 'r+')
+  current_data = JSON.parse(file.read, :symbolize_names => true)
+  current_data.each_with_index do |data, index|
+    # puts data
+    puts("#{index + 1}. #{data[:store]} : ")
+    data[:menus].each {|menu| puts "#{menu[:name]} (#{menu[:quantity]}) harga per unit #{menu[:price]}"}
+    puts "Biaya : #{data[:cost]}"
+    puts
+  end
 end
 
 # map = Map.new("map.json")

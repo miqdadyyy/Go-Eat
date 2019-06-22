@@ -21,10 +21,10 @@ class Map
 
       drivers_count = 5
       stores_count = 3
-      generateMapRandom(drivers_count, 'D')
-      generateMapRandom(stores_count, 'S')
+      generate_map_random(drivers_count, 'D')
+      generate_map_random(stores_count, 'S')
       puts "call random"
-      generateMapRandom(1, 'U')
+      generate_map_random(1, 'U')
 
     when 3
       @width = args[0].to_i
@@ -33,8 +33,8 @@ class Map
 
       drivers_count = 5
       stores_count = 3
-      generateMapRandom(drivers_count, 'D')
-      generateMapRandom(stores_count, 'S')
+      generate_map_random(drivers_count, 'D')
+      generate_map_random(stores_count, 'S')
 
       pos_user_x = args[1].to_i
       pos_user_y = args[2].to_i
@@ -48,13 +48,13 @@ class Map
 
       drivers_count = map_data[:drivers].size
       stores_count = map_data[:stores].size
-      generateMap(map_data[:drivers], 'D')
-      generateMap(map_data[:stores], 'S')
-      generateMap([map_data[:user]], 'U')
+      generate_map(map_data[:drivers], 'D')
+      generate_map(map_data[:stores], 'S')
+      generate_map([map_data[:user]], 'U')
     end
   end
 
-  def showMap(map = @map)
+  def show_map(map = @map)
     map.map.each do |i|
       i.each do |j|
         print j
@@ -64,9 +64,9 @@ class Map
     nil
   end
 
-  private
 
-  def generateMapRandom(count, character)
+
+  def generate_map_random(count, character)
     (1..count).each do |_i|
       x = rand(@width)
       y = rand(@height)
@@ -87,7 +87,7 @@ class Map
     @map
   end
 
-  def generateMap(objects, character)
+  def generate_map(objects, character)
     objects.each do |object|
       if character == 'S'
         @stores << Store.new(object[:name], object[:menus], object[:pos])

@@ -1,0 +1,24 @@
+[
+  {
+    "store": "Pak Edi",
+    "menus": [
+      {
+        "name": "Ayam Goreng",
+        "price": 20000,
+        "quantity": 3
+      }
+    ],
+    "cost": 65700
+  },
+  {
+    "store": "Warung Bakaran",
+    "menus": [
+      {
+        "name": "Ayam Bakar",
+        "price": 10000,
+        "quantity": 5
+      }
+    ],
+    "cost": 53600
+  }
+]
